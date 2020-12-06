@@ -43,9 +43,7 @@ app.get('/' , (req , res)=>{
 app.post('/' , (req , res) => {
     let task = String(req.body.task).trim() ;
 
-    if(task.length > 0)
-    {
-        let todo = new Todo();
+    let todo = new Todo();
         todo.task = String(req.body.task);
     
         todo.save((err)=>{
@@ -55,17 +53,8 @@ app.post('/' , (req , res) => {
                 res.redirect('/');
             }
         });
-    }
-    else{
-        let message = "task should not be empty";
-        Todo.find({} , (err , todos)=>{
-            if(err)
-            console.log(err);
-            else{
-                res.render('F:/crud_mongo/views/index' , {todo:todos , message:message});
-            }
-        });
-    }
+    
+    
 });
 
 
