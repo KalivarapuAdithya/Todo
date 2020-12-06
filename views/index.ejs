@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+
+    <title>Tasks</title>
+    
+    <script>
+        function validate(){
+            let task = document.getElementById('task');
+            if(task.value.trim() == ""){
+                alert('task cannot be empty');
+                return false;
+            }
+            return true;
+        }
+    </script>
+    
+</head>
+<body>
+    <div class="container-md border border-primary mt-2">
+        <h1 class="primary text-center" style="font-weight: bolder;"> Todo App </h1>
+        
+        <% if(message.trim().length > 0) { %>
+            <div  id = "message" style = "display: block;">
+                <div   class = "alert alert-danger">
+                    <h4><%= message%></h4>
+                </div>
+            </div>    
+        <% } %>
+
+        <div>
+            <form onsubmit="return validate();" method = 'POST' >
+                <div class="form-group">
+                    <label for="task">Add Task:</label>
+                    <input class = "form-control" type="text" id="task" name="task" placeholder="enter something">
+                    <input type="submit" class="btn btn-success mt-2" value="Add" >
+                </div>
+            </form>
+
+            
+            
+            <div class="m-2 ">
+                <% if(todo.length > 0) {%>
+                    <h3>Tasks : </h3>
+                    <%} %>
+                    <ol class="list-group">
+                        <% let i=1 %>
+                        <% todo.forEach((td)=>{  %>
+                            <li class="list-group-item "><%=i%>.  <%= td.task %>
+                                <% i= i+1; %>
+                            <span class="float-right">
+                                <a class="btn text-primary " href="/edit/<%= td._id %>" ><i class="fa fa-pencil"></i></a>
+                                <a class="btn text-danger " href="/delete/<%= td._id %>" ><i class="fa fa-trash"></i></a>
+                            </span>
+                            </li>
+                            
+                        <%  }) %>
+                    </ol>
+                
+            </div>
+        </div>
+
+
+    </div>
+</body>
+</html>
