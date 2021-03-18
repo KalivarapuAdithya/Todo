@@ -13,26 +13,31 @@
 
 
     <title>Document</title>
+
+    <script>
+        function validate(){
+            let task = document.getElementById('task');
+            if(task.value.trim() == ""){
+                task.style.borderColor = "red";
+                document.getElementById("error").style.display = "block";
+                return false;
+            }
+            return true;
+        }
+    </script>
 </head>
 <body>
     <div class="container-md border border-primary mt-2">
         <h1 class="primary text-center" style="font-weight: bolder;"> Todo App </h1>
 
         <div>
-            <% if(message.length != 0) { %>
-            <div class="alert alert-danger">
-                
-                    <h4><%= message %></h4>
-                
-                
-            </div>
-            <% } %>
 
             <form method = "POST" action="/edit/<%=todo._id%>" >
                 <div class="form-group">
                     <label for="task">Edit Task:</label>
                     <input class = "form-control" type="text" id="task" name="task" value="<%= todo.task %>">
-                    <input type="submit" value="Save" class="btn btn-success mt-2  ">
+                    <small id="error" style="display: none;color: red;">*Cannot be empty</small>
+                    <input type="submit" value="Save" class="btn btn-danger mt-2  ">
                 </div>
             </form>
             

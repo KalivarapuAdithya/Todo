@@ -17,7 +17,8 @@
         function validate(){
             let task = document.getElementById('task');
             if(task.value.trim() == ""){
-                alert('task cannot be empty');
+                task.style.borderColor = "red";
+                document.getElementById("error").style.display = "block";
                 return false;
             }
             return true;
@@ -29,20 +30,29 @@
     <div class="container-md border border-primary mt-2">
         <h1 class="primary text-center" style="font-weight: bolder;"> Todo App </h1>
         
-        <% if(message.trim().length > 0) { %>
-            <div  id = "message" style = "display: block;">
-                <div   class = "alert alert-danger">
-                    <h4><%= message%></h4>
-                </div>
-            </div>    
-        <% } %>
+
+        
 
         <div>
+
+            <% if(success.length != 0){%>
+            <div class="alert alert-success"> 
+                <%= success[0] %>
+            </div>
+            <%}%>
+
+            <% if(error.length != 0){%>
+                <div class="alert alert-danger"> 
+                    <%= error[0] %>
+                </div>
+            <%}%>    
+
             <form onsubmit="return validate();" method = 'POST' >
                 <div class="form-group">
                     <label for="task">Add Task:</label>
-                    <input class = "form-control" type="text" id="task" name="task" placeholder="enter something">
-                    <input type="submit" class="btn btn-success mt-2" value="Add" >
+                    <input class = "form-control" type="text" id="task" name="task" placeholder="enter your task to add in list" style="border-color: rgb(221, 216, 216);">
+                    <small id="error" style="display: none;color: red;">*Cannot be empty</small>
+                    <input type="submit" class="btn btn-success mt-2" value="Add Task" >
                 </div>
             </form>
 

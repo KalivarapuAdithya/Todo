@@ -1,14 +1,23 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const flash = require('connect-flash');
+const session = require('express-session');
 
 const app = express();
 app.set('view engine' , 'ejs');
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
-const Todo = require('F:/crud_mongo/models/todo');
-const e = require("express");
+app.use(session({
+    secret: 'keyboard cat',
+    resave: true,
+    saveUninitialized: true
+}));
+
+app.use(flash());
+
+const Todo = require('./models/todo');
 
 mongoose.connect('mongodb://localhost/todo' ,{ useNewUrlParser:true ,useUnifiedTopology:true });
 
@@ -17,10 +26,6 @@ let db = mongoose.connection;
 db.once('open' , ()=>{
     console.log("database connected");
 });
-
-// Todo.insertMany([{task : 'hi'} , {task : 'math'}]);
-
-
 
 db.on('err' , (err)=>{
     console.log(err);
@@ -34,7 +39,7 @@ app.get('/' , (req , res)=>{
         if(err)
         console.log(err);
         else{
-            res.render('F:/crud_mongo/views/index' , {todo:todos , message:message});
+            res.render('./index' , {todo:todos , success : req.flash('success') , error : req.flash('error')});
         }
     });
 
@@ -42,7 +47,6 @@ app.get('/' , (req , res)=>{
 
 app.post('/' , (req , res) => {
     let task = String(req.body.task).trim() ;
-
     let todo = new Todo();
         todo.task = String(req.body.task);
     
@@ -50,6 +54,7 @@ app.post('/' , (req , res) => {
             if(err)
             console.log(err);
             else{
+                req.flash('success' , `${task} is added`);
                 res.redirect('/');
             }
         });
@@ -63,8 +68,8 @@ app.get('/edit/:id' , (req , res)=>{
         if(err)
         console.log(err);
         else{
-            let message = ""
-            res.render('F:/crud_mongo/views/edit' , {todo:todos , message:message});
+            
+            res.render('./edit' , {todo:todos });
         }
         
     });
@@ -73,43 +78,44 @@ app.get('/edit/:id' , (req , res)=>{
 app.post('/edit/:id' , (req , res)=>{
     let task = String(req.body.task).trim() ;
 
-    if(task.length > 0)
-    {
-        let todo = new Todo();
-        todo = {task : task};
-
-        Todo.updateOne({_id:req.params.id} , todo , (err)=>{
-            if(err)
-            console.log(err);
-            else{
-                res.redirect('/');
-            }
-        });
-    }
-    else{
-        let message = "task should not be empty";
-        let id = req.params.id;
-        Todo.findOne({_id:id} , (err , todos)=>{
-            if(err)
-            console.log(err);
-            else{
-                res.render('edit' , {todo:todos , message:message});
-            }
-        });
-    }
+    Todo.findOne({_id:req.params.id} , (err , todo)=>{
+        if(err)
+        console.log(err);
+        else{
+            todo.task = task;
+            todo.save( (err)=>{
+                if(err)
+                console.log(err);
+                else{
+                    req.flash('success' , `A task has been modified to ${task}` );
+                    res.redirect('/');
+                }
+            });
+        }
+    })
+        
     
 })
 
 
 
 app.get('/delete/:id' , (req,res)=>{
-    Todo.deleteOne({_id:req.params.id} , (err)=>{
+    Todo.findOne({_id:req.params.id} , (err , todo)=>{
         if(err)
         console.log(err);
         else{
-            res.redirect('/');
+            let task = todo.task;
+            Todo.deleteOne({_id:req.params.id} , (err)=>{
+                if(err)
+                console.log(err);
+                else{
+                    req.flash('error' , `${task} Deleted `);
+                    res.redirect('/');
+                }
+            });
         }
-    });
+    })
+    
 });
 
 
