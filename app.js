@@ -21,8 +21,7 @@ app.use(flash());
 
 const Todo = require('./models/todo');
 
-const uri = toString(process.env.MONGOURI);
-mongoose.connect( uri ,{ useNewUrlParser:true ,useUnifiedTopology:true });
+mongoose.connect( process.env.MONGOURI ,{ useNewUrlParser:true ,useUnifiedTopology:true });
 
 let db = mongoose.connection;
 
