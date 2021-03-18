@@ -19,7 +19,7 @@
   },
   "scripts": {
     "app":"node app",
-    "Start": "nodemon app.js",
+    "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
