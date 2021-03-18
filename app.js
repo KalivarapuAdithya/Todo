@@ -20,8 +20,9 @@ app.use(session({
 app.use(flash());
 
 const Todo = require('./models/todo');
-
-mongoose.connect( "mongodb+srv://Adithya_Todo:Todo_Adithya@cluster0.sgpm5.mongodb.net/TODO?retryWrites=true&w=majority" ,{ useNewUrlParser:true ,useUnifiedTopology:true });
+ let mongourl = process.env.NAME;
+ console.log(mongourl);
+mongoose.connect( mongourl ,{ useNewUrlParser:true ,useUnifiedTopology:true });
 
 let db = mongoose.connection;
 
