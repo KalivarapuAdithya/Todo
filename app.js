@@ -20,7 +20,7 @@ app.use(session({
 app.use(flash());
 
 const Todo = require('./models/todo');
-let mongourl = process.env.NAME;
+const mongourl = process.env.MONGO_URL;
 
 mongoose.connect( mongourl ,{ useNewUrlParser:true ,useUnifiedTopology:true });
 
