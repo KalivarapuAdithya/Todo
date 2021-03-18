@@ -21,7 +21,7 @@ app.use(flash());
 
 const Todo = require('./models/todo');
 
-mongoose.connect( `${process.env.MONGOURI}` ,{ useNewUrlParser:true ,useUnifiedTopology:true });
+mongoose.connect( "mongodb+srv://Adithya_Todo:Todo_Adithya@cluster0.sgpm5.mongodb.net/TODO?retryWrites=true&w=majority" ,{ useNewUrlParser:true ,useUnifiedTopology:true });
 
 let db = mongoose.connection;
 
