@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 const flash = require('connect-flash');
 const session = require('express-session');
 
+require('dotenv').config();
+
 const app = express();
 app.set('view engine' , 'ejs');
 app.use(bodyParser.urlencoded({extended:false}));
@@ -19,7 +21,7 @@ app.use(flash());
 
 const Todo = require('./models/todo');
 
-mongoose.connect('mongodb://localhost/todo' ,{ useNewUrlParser:true ,useUnifiedTopology:true });
+mongoose.connect( process.env.MONGOURI ,{ useNewUrlParser:true ,useUnifiedTopology:true });
 
 let db = mongoose.connection;
 
