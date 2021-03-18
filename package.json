@@ -18,7 +18,8 @@
     "nodemon": "^2.0.6"
   },
   "scripts": {
-    "devStart": "nodemon app.js",
+    "app":"node app",
+    "Start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
